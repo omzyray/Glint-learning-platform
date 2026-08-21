@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Search, Bell, ArrowRight, Clock, BarChart3, FileText, Star } from "lucide-react";
+import { getCourses } from "@/app/lib/courses";
 
-export default function Home() {
+export default async function Home() {
+  const courses = await getCourses();
   return (
     <div className="min-h-screen bg-[#FFFBF8]">
       {/* Shell: diagonal hatch strips sit immediately adjacent to central card */}
@@ -114,80 +116,52 @@ export default function Home() {
             </div>
 
             <div className="mt-7 grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3 lg:gap-6">
-              {/* Card 1 – Next.js */}
-              <article className="flex min-h-[272px] flex-col rounded-[16px] border border-[#F1E9E0] bg-white p-7 shadow-sm transition-shadow hover:shadow-md sm:min-h-[320px] sm:p-7">
-                <div className="flex h-[52px] w-[52px] items-center justify-center rounded-[12px] bg-[#0A0A0F]">
-                  <span className="font-sans text-[28px] font-bold tracking-tighter text-white">N</span>
-                </div>
-                <h3 className="mt-5 font-display text-[18px] font-semibold leading-6 text-[#0F172A]">Next.js for Production</h3>
-                <p className="mt-2 font-sans text-[13.5px] leading-6 text-[#64748B]">Build scalable, high-performance web applications with Next.js.</p>
-                <div className="mt-auto flex flex-wrap items-center gap-4 border-t border-[#F1F5F9] pt-5 text-[11.5px] font-sans text-[#64748B]">
-                  <span className="inline-flex items-center gap-1.5">
-                    <BarChart3 className="h-3.5 w-3.5" /> Intermediate
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5" /> 18h 24m
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <FileText className="h-3.5 w-3.5" /> 12 modules
-                  </span>
-                </div>
-              </article>
-
-              {/* Card 2 – Docker */}
-              <article className="flex min-h-[272px] flex-col rounded-[16px] border border-[#F1E9E0] bg-white p-7 shadow-sm transition-shadow hover:shadow-md sm:min-h-[320px] sm:p-7">
-                <div className="flex h-[52px] w-[52px] items-center justify-center rounded-[12px] bg-white">
-                  <svg width="46" height="32" viewBox="0 0 48 32" fill="none" aria-hidden="true">
-                    <path
-                      d="M6 19C6 12 11 9 18 11L29 13.5C34 14.5 39 15.5 41 19C39 24.5 32 28.5 21 27C12 25.5 6 23 6 19Z"
-                      fill="#0DB7ED"
-                      stroke="#0DB7ED"
-                      strokeWidth="0.8"
-                    />
-                    <rect x="10" y="7" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
-                    <rect x="18" y="7" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
-                    <rect x="26" y="7" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
-                    <rect x="14" y="2" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
-                    <rect x="22" y="2" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
-                    <rect x="14" y="1" width="1.2" height="1.2" rx="0.3" fill="#0DB7ED" />
-                    <rect x="16.5" y="1" width="1.2" height="1.2" rx="0.3" fill="#0DB7ED" />
-                    <circle cx="36" cy="18" r="1" fill="white" />
-                  </svg>
-                </div>
-                <h3 className="mt-5 font-display text-[18px] font-semibold leading-6 text-[#0F172A]">Docker Essentials</h3>
-                <p className="mt-2 font-sans text-[13.5px] leading-6 text-[#64748B]">Containerize applications and streamline your development workflow.</p>
-                <div className="mt-auto flex flex-wrap items-center gap-4 border-t border-[#F1F5F9] pt-5 text-[11.5px] font-sans text-[#64748B]">
-                  <span className="inline-flex items-center gap-1.5">
-                    <BarChart3 className="h-3.5 w-3.5" /> Beginner
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5" /> 10h 12m
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <FileText className="h-3.5 w-3.5" /> 8 modules
-                  </span>
-                </div>
-              </article>
-
-              {/* Card 3 – TS */}
-              <article className="flex min-h-[272px] flex-col rounded-[16px] border border-[#F1E9E0] bg-white p-7 shadow-sm transition-shadow hover:shadow-md sm:min-h-[320px] sm:p-7">
-                <div className="flex h-[52px] w-[52px] items-center justify-center rounded-[12px] bg-[#3178C6]">
-                  <span className="font-sans text-[22px] font-bold tracking-tight text-white">TS</span>
-                </div>
-                <h3 className="mt-5 font-display text-[18px] font-semibold leading-6 text-[#0F172A]">TypeScript Deep Dive</h3>
-                <p className="mt-2 font-sans text-[13.5px] leading-6 text-[#64748B]">Go beyond the basics and write safer, more expressive code.</p>
-                <div className="mt-auto flex flex-wrap items-center gap-4 border-t border-[#F1F5F9] pt-5 text-[11.5px] font-sans text-[#64748B]">
-                  <span className="inline-flex items-center gap-1.5">
-                    <BarChart3 className="h-3.5 w-3.5" /> Intermediate
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5" /> 14h 36m
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <FileText className="h-3.5 w-3.5" /> 10 modules
-                  </span>
-                </div>
-              </article>
+              {courses.map((course) => (
+                <article
+                  key={course.slug}
+                  className="flex min-h-[272px] flex-col rounded-[16px] border border-[#F1E9E0] bg-white p-7 shadow-sm transition-shadow hover:shadow-md sm:min-h-[320px] sm:p-7"
+                >
+                  <div
+                    className={`flex h-[52px] w-[52px] items-center justify-center rounded-[12px] ${course.icon === "next" ? "bg-[#0A0A0F]" : course.icon === "docker" ? "bg-white" : "bg-[#3178C6]"}`}
+                  >
+                    {course.icon === "next" ? (
+                      <span className="font-sans text-[28px] font-bold tracking-tighter text-white">N</span>
+                    ) : course.icon === "docker" ? (
+                      <svg width="46" height="32" viewBox="0 0 48 32" fill="none" aria-hidden="true">
+                        <path
+                          d="M6 19C6 12 11 9 18 11L29 13.5C34 14.5 39 15.5 41 19C39 24.5 32 28.5 21 27C12 25.5 6 23 6 19Z"
+                          fill="#0DB7ED"
+                          stroke="#0DB7ED"
+                          strokeWidth="0.8"
+                        />
+                        <rect x="10" y="7" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
+                        <rect x="18" y="7" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
+                        <rect x="26" y="7" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
+                        <rect x="14" y="2" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
+                        <rect x="22" y="2" width="7" height="6" rx="1" fill="#FFFFFF" stroke="#2496ED" strokeWidth="0.7" />
+                        <rect x="14" y="1" width="1.2" height="1.2" rx="0.3" fill="#0DB7ED" />
+                        <rect x="16.5" y="1" width="1.2" height="1.2" rx="0.3" fill="#0DB7ED" />
+                        <circle cx="36" cy="18" r="1" fill="white" />
+                      </svg>
+                    ) : (
+                      <span className="font-sans text-[22px] font-bold tracking-tight text-white">TS</span>
+                    )}
+                  </div>
+                  <h3 className="mt-5 font-display text-[18px] font-semibold leading-6 text-[#0F172A]">{course.title}</h3>
+                  <p className="mt-2 font-sans text-[13.5px] leading-6 text-[#64748B]">{course.summary}</p>
+                  <div className="mt-auto flex flex-wrap items-center gap-4 border-t border-[#F1F5F9] pt-5 text-[11.5px] font-sans text-[#64748B]">
+                    <span className="inline-flex items-center gap-1.5">
+                      <BarChart3 className="h-3.5 w-3.5" /> {course.level}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5" /> {course.duration}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <FileText className="h-3.5 w-3.5" /> {course.modulesCount} modules
+                    </span>
+                  </div>
+                </article>
+              ))}
             </div>
 
             {/* Tagline divider – directly above orange artwork */}

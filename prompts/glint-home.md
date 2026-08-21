@@ -1,7 +1,7 @@
 # Prompt: Implement Glint Home Page from glint-home.png
 
 ## Goal
-Reproduce the Glint home page exactly as shown in `design/glint-home.png` (desktop reference) while adapting responsively to mobile. The page is marketing + discovery: header, centered hero with intelligent learning badge, large serif headline, sub-copy, primary CTA, prominent search bar with ⌘K hint, "All Courses" grid (3 cards), and bottom tagline with decorative blurred bars. No backend, no Sanity, Clerk, PostHog for this slice – purely presentational but using existing Tailwind v4 tokens and component patterns.
+Reproduce the Glint home page exactly as shown in `design/glint-home.png` (desktop reference) while adapting responsively to mobile. The page is marketing + discovery: header, centered hero with intelligent learning badge, large serif headline, sub-copy, primary CTA, prominent search bar with ⌘K hint, "All Courses" grid (3 cards), and bottom tagline with decorative blurred bars, using existing Tailwind v4 tokens and component patterns. Course content is fetched from the server-side content path (Sanity) via typed fields; displayed course and lesson details must come only from returned data.
 
 ## Skills Read
 - AGENTS.md §3 UI work: reproduce layout/spacing/typography/color exactly, desktop exact, responsive stack/collapse, reuse existing Tailwind patterns before adding new components.
@@ -21,14 +21,14 @@ Reproduce the Glint home page exactly as shown in `design/glint-home.png` (deskt
 - `app/components/ui/input.tsx:1` – SearchInput pattern – Home search is larger (56px) with ⌘K hint on right, not left 36 K.
 - `app/lib/cn.ts:1` – helper.
 - `package.json:11` – next 16.3.2, react 19, lucide-react, clsx, tailwind-merge.
-- `design/glint-home.png` – source of truth: header Vertex logo + Courses/My Learning + bell + avatar; hero badge INTELLIGENT LEARNING pill, headline "Search your learning in plain English." (Playfair bold), sub-copy Vertex understands..., Explore Courses → button, search placeholder "Ask anything about your learning..." + ⌘K, section All Courses with View all courses → link, 3 cards (Next.js for Production / Docker Essentials / TypeScript Deep Dive) with N black, Docker whale blue, TS blue, descriptions, meta Intermediate/Beginner + durations 18h24m/10h12m/14h36m + modules 12/8/10, bottom divider with star "New courses and lessons added every week.", blurred orange bars at bottom, outer diagonal hatch side borders, page bg #FFFCFA cream.
+- `design/glint-home.png` – source of truth for layout/spacing/typography/color, but branding in image shows Vertex — per BRAND.md implement all brand text as Glint: header Glint logo + Courses/My Learning + bell + avatar; hero badge INTELLIGENT LEARNING pill, headline "Search your learning in plain English." (Playfair bold), sub-copy Glint understands..., Explore Courses → button, search placeholder "Ask anything about your learning..." + ⌘K, section All Courses with View all courses → link, 3 cards (Next.js for Production / Docker Essentials / TypeScript Deep Dive) with N black, Docker whale blue, TS blue, descriptions, meta Intermediate/Beginner + durations 18h24m/10h12m/14h36m + modules 12/8/10, bottom divider with star "New courses and lessons added every week.", blurred orange bars at bottom, outer diagonal hatch side borders, page bg #FFFCFA cream.
 - `prompts/glint-design-system.md:1` – documents token mapping – reuse same tokens.
 
 ## Decisions & Assumptions
-- **Branding**: Reference image says "Vertex" in header and hero copy ("Vertex understands..."). Existing project branding is "Glint" (layout, logo). To match reference pixel-perfect, header logo text and hero copy will say "Vertex" as in the image. Logo V shape stays same (#F97316 + #FB923C). If product rename is intended, keep Vertex for this page; Glint remains in metadata fallback but header will show Vertex to match image. Alternative assumption (if reviewer expects Glint) – easy search-replace Vertex→Glint; but pixel fidelity requires Vertex.
+- **Branding**: Reference image shows "Vertex" in header and hero copy ("Vertex understands..."), but per `BRAND.md` persistent rule always render as **Glint** — override the image. Header logo text and hero copy must say "Glint" ("Glint understands..."). Logo V shape stays same (#F97316 + #FB923C). Do not use Vertex anywhere in UI, code, prompts, metadata or docs; `app/layout.tsx` title/description and `app/page.tsx` header/hero already use Glint per `BRAND.md:13`.
 - **Outer striped borders**: Image shows ~12px diagonal hatch on far left/right outside central card. Implement as outer wrapper with `repeating-linear-gradient(-45deg, #FFE8D5 0 1px, transparent 1px 12px)` on bg #FFFBF8, and inner container `max-w-[1120px] mx-auto bg-[#FFFCFA] border-x border-[#F1E8E0]` to leave gutters where hatch shows on desktop. On mobile gutters collapse (no side borders, full-width).
 - **Page background**: Central content bg #FFFCFA / #FFFAF7 (same as hero). Use #FFFBF8 for outer, #FFFCFA for inner card – matches cream. All Courses section same bg, separated by thin border-t #F1E8E0.
-- **Header**: Height ~64px, border-b #F1E8E0, px 6-8, flex justify-between. Left: logo V (24px) + "Vertex" 16-18px semibold #0F172A. Center: nav Courses / My Learning 14px medium #0F172A / #64748B, gap 6-8. Right: Bell 20px #64748B + avatar 32px circle (use `https://i.pravatar.cc/100?img=5` or unsplash, fallback gray). Hide nav on <640 behind hamburger is not in image, but for responsiveness collapse nav to hidden and show hamburger icon may be extra; instead keep nav visible and wrap. To stay faithful, desktop shows nav, mobile stacks/hides nav into hamburger (using hidden sm:flex).
+- **Header**: Height ~64px, border-b #F1E8E0, px 6-8, flex justify-between. Left: logo V (24px) + "Glint" 16-18px semibold #0F172A (image shows Vertex — implement as Glint per BRAND.md). Center: nav Courses / My Learning 14px medium #0F172A / #64748B, gap 6-8. Right: Bell 20px #64748B + avatar 32px circle (use `https://i.pravatar.cc/100?img=5` or unsplash, fallback gray). Hide nav on <640 behind hamburger is not in image, but for responsiveness collapse nav to hidden and show hamburger icon may be extra; instead keep nav visible and wrap. To stay faithful, desktop shows nav, mobile stacks/hides nav into hamburger (using hidden sm:flex).
 - **Hero badge**: Inline pill `INTELLIGENT LEARNING` tracking-[0.18em] text-[11px] font-semibold text-[#E86A2E] bg-[#FFF1E8] border border-[#FFE4D1] rounded-[8px] px-3 py-1.5 – matches image peach pill.
 - **Headline**: Playfair Display bold, centered, text-[#0F172A], leading 1.05, sizes: 36px mobile, 48px tablet, 56px desktop. Content break after "learning" as in image – use `<br class="hidden sm:block">` or two lines via max-width.
 - **Sub-copy**: Inter 15-16px #64748B, max-w-[560px] centered, mt-4, two lines as in image.
@@ -41,22 +41,22 @@ Reproduce the Glint home page exactly as shown in `design/glint-home.png` (deskt
 - **Fonts**: Reuse Inter + Playfair already loaded. Ensure headline uses `font-display` (Playfair), body uses `font-sans` (Inter). No new font needed.
 - **Reuse vs new**: Reuse `cn` helper, Button pattern (but inline for hero), Card base (or inline). No need to modify `components/ui/*` – keep them for future pages; page will be self-contained but can import `Bell, Search, ArrowRight, Clock, BarChart3, FileText, Star` from lucide-react.
 - **Responsiveness**: Mobile <640: header nav hidden (show hamburger placeholder), hero headline wraps to 3 lines, search bar full-width with smaller placeholder, cards stack single column, tagline text wraps, blurred bars still show but fewer. No horizontal overflow at 375px.
-- **Assumes no data fetching**: Cards are static mock data as per image, not from Sanity. No auth gating.
+- **Data fetching**: Cards render only grounded stored records from the server-side content path (typed fields from Sanity); unavailable courses are omitted. Displayed course and lesson details must come only from returned data. No auth gating for this slice.
 - **Tailwind**: Use v4 utilities exclusively, no custom CSS beyond tokens already in globals.css. Add outer hatch via arbitrary value or inline style.
 
 ## Files to Touch
 - `app/page.tsx` – replace Design System showcase with Home page implementation (header, hero, search, All Courses, tagline, blurred bars, outer wrapper).
-- `app/layout.tsx` – update metadata title/description to reflect Home ("Vertex — Search your learning in plain English" or keep Glint) and ensure body bg matches outer hatch (keep `bg-[#FFFBF8]` or via page wrapper). Minimal change – update title to "Vertex — Intelligent Learning" to match hero.
+- `app/layout.tsx` – update metadata title/description to reflect Home ("Glint — Search your learning in plain English") and ensure body bg matches outer hatch (keep `bg-[#FFFBF8]` or via page wrapper). Minimal change – title is "Glint — Search your learning in plain English" per BRAND.md (do not use Vertex).
 - `app/globals.css` – no token change needed; verify striped pattern can be done via arbitrary tailwind, not needed to add CSS. If needed, add `.bg-hatch` utility.
 - `prompts/glint-home.md` – this file.
 - No changes to `app/components/*` unless header reuse needed – will inline for pixel control.
 
 ## Requirements
 ### Functional
-- Header matches image: Vertex V logo + Vertex text left, Courses / My Learning center, bell + avatar right, border-b.
+- Header matches image layout: Glint V logo + Glint text left (image shows Vertex — implement as Glint per BRAND.md), Courses / My Learning center, bell + avatar right, border-b.
 - Hero badge "INTELLIGENT LEARNING" centered pill orange on peach.
 - Headline "Search your learning in plain English." centered Playfair bold, two lines desktop, wraps mobile.
-- Sub-copy "Vertex understands what you want to learn and finds the exact lessons across all your courses." centered gray, two lines.
+- Sub-copy "Glint understands what you want to learn and finds the exact lessons across all your courses." centered gray, two lines (image shows Vertex — implement as Glint per BRAND.md).
 - CTA "Explore Courses →" orange button centered, arrow right, hover darkens.
 - Search bar centered max-w ~700, white, Search icon left, placeholder, ⌘K hint right, 56px height, rounded 12px.
 - Section "All Courses" with title left, "View all courses →" orange link right, grid 3 cards with exact content/icons/meta as above, card hover lifts slightly.
@@ -94,7 +94,7 @@ Reproduce the Glint home page exactly as shown in `design/glint-home.png` (deskt
 - Manual `npm run dev` smoke + curl grep for hero title
 
 ## Manual Test Steps
-1. `npm run dev` open http://localhost:3000 at 1280×800 – compare to `design/glint-home.png`: verify header Vertex + bell/avatar, badge pill, headline two lines Playfair, sub-copy two lines, orange CTA, search bar with ⌘K, All Courses header + link, 3 cards with N/Docker/TS icons and meta exactly, star divider, blurred bars, side hatch.
+1. `npm run dev` open http://localhost:3000 at 1280×800 – compare to `design/glint-home.png` (image shows Vertex — verify implementation shows Glint): verify header Glint + bell/avatar, badge pill, headline two lines Playfair, sub-copy two lines, orange CTA, search bar with ⌘K, All Courses header + link, 3 cards with N/Docker/TS icons and meta exactly, star divider, blurred bars, side hatch.
 2. Resize to 375×800 – verify no horizontal overflow, header nav collapses, hero stacks, search full-width, cards single column, tagline wraps, bars still visible.
 3. Inspect CTA button computed bg `rgb(249,115,22)` or `#F97316`, radius 8-12px, height 44px.
 4. Inspect search input placeholder color and border #E2E8F0, height 56px.
