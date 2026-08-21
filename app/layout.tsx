@@ -22,8 +22,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Glint — Design System",
-  description: "A unified design language for Glint learning platform. Clean, modern and focused on clarity.",
+  title: "Glint — Search your learning in plain English",
+  description: "Glint understands what you want to learn and finds the exact lessons across all your courses.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${inter.variable} ${playfair.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#FAFAFC] text-[#0F172A] font-sans">
+      <body className="min-h-full flex flex-col bg-[#FFFCFA] text-[#0F172A] font-sans">
         {children}
       </body>
     </html>
