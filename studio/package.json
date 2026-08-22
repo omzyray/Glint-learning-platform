@@ -1,0 +1,25 @@
+{
+  "name": "studio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Glint Sanity Studio — standalone workspace",
+  "main": "sanity.config.ts",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "typegen": "sanity schema extract --enforce-required-fields && sanity typegen generate"
+  },
+  "dependencies": {
+    "sanity": "^5.31.2",
+    "@sanity/vision": "^5.31.2",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "styled-components": "^6.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "typescript": "^5"
+  }
+}
