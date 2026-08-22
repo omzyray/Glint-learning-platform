@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -30,10 +31,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#FFFCFA] text-[#0F172A] font-sans">
-        {children}
+      <body className="bg-[#FFFCFA] text-[#0F172A] font-sans">
+        <ClerkProvider>
+          {children}
+        </ClerkProvider>
       </body>
     </html>
   );
