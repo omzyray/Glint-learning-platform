@@ -13,22 +13,21 @@ import type {QueryParams} from 'next-sanity'
  * Drop-in replacement for the scaffolded live content API for now
  * (live helper is deferred per AGENTS.md private-dataset rule).
  */
-export async function sanityFetch<const QueryString extends string>({
+export async function sanityFetch<T>({
   query,
   params = {},
   revalidate = 60,
   tags = [],
 }: {
-  query: QueryString
+  query: string
   params?: QueryParams
   revalidate?: number | false
   tags?: string[]
-}) {
+}): Promise<T> {
   return serverClient.fetch(query, params, {
-    // When tags are present, Next recommends `revalidate: false` and rely on tag invalidation.
     next: {
-      revalidate: tags.length ? false : revalidate,
+      revalidate,
       tags,
     },
-  })
+  }) as Promise<T>
 }

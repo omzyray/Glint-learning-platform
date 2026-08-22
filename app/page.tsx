@@ -167,9 +167,11 @@ export default async function Home() {
                     <span className="inline-flex items-center gap-1.5">
                       <BarChart3 className="h-3.5 w-3.5" /> {course.level}
                     </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5" /> {course.duration}
-                    </span>
+                    {course.duration ? (
+                      <span className="inline-flex items-center gap-1.5">
+                        <Clock className="h-3.5 w-3.5" /> {course.duration}
+                      </span>
+                    ) : null}
                     <span className="inline-flex items-center gap-1.5">
                       <FileText className="h-3.5 w-3.5" /> {course.modulesCount} modules
                     </span>
