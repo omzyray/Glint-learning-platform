@@ -35,7 +35,7 @@ Move the Sanity Studio from the embedded Next.js route `app/studio/[[...tool]]/p
 - `studio/package.json` is independent workspace with `sanity`, `@sanity/vision`, `styled-components` (Studio peer), scripts `dev`, `build`, `deploy`, `typegen`. Web root `package.json` retains `next-sanity` & `sanity` runtime for fetching only; Studio deps can stay duplicated or be deduped via npm workspaces — minimal change is to keep both, but document that Studio deps are authoritative.
 - No npm workspaces config required for correctness; lockfile at root suffices. If adding `workspaces: ["studio"]` would change install behavior, defer unless user requests monorepo workspaces.
 - `studio/sanity.config.ts` mirrors root config but imports from `./schemaTypes` and `./structure` inside studio, and reads env from `./env` that mirrors web’s env.ts (NEXT_PUBLIC vars) for consistency. Alternatively could read directly from process.env; choose `./env` to keep single source of validation.
-- `studio/sanity.cli.ts` will define `api: { projectId, dataset }` and `typegen: { enabled: true, path: "../sanity/lib/queries.ts" varies — but web queries now live at `sanity/lib/queries.ts` (root). For standalone, typegen path must point to web queries: `path: "../**/*.{ts,tsx}"` or more narrow. Start with `path: "../app/**/*.{ts,tsx}"` + `../sanity/lib/**/*.{ts,tsx}` and `generates: "../sanity.types.ts"` or `generates: "./sanity.types.ts"`? Evaluate: web needs types at root `sanity.types.ts`; studio is the one extracting schema. Simplest: `sanity.cli.ts` typegen `{ path: "../{app,sanity}/**/*.{ts,tsx}", schema: "./schema.json", generates: "../sanity.types.ts" }` — but will verify against typegen.md examples. Decision: set `typegen.path` to `../sanity/lib/queries.ts` + `../app/lib/**` and `generates` to `../sanity.types.ts` so web can import types.
+- `studio/sanity.cli.ts` defines `api` with `projectId` and `dataset`, and `typegen` with `enabled` set to `true`, `path` set to `../{app,sanity}/**/*.{ts,tsx}`, `schema` set to `./schema.json`, and `generates` set to `../sanity.types.ts`.
 - Delete `app/studio/` entirely (including page.tsx) and delete root `sanity.config.ts` + `sanity.cli.ts` after copying; root `sanity/` folder will remain for web runtime (`sanity/lib/*`, `sanity/env.ts`) but `sanity/schemaTypes` moves to `studio/schemaTypes`. To avoid confusion, root will keep `sanity/lib` + `sanity/env.ts` only; studio keeps `studio/schemaTypes` + `studio/structure.ts`. No duplicate schema.
 - CORS origins must include `http://localhost:3000` and `http://localhost:3333` — document as manual step via `npx sanity cors add` (cannot auto-add without token in CI).
 - Vision plugin stays in Studio only.
@@ -72,7 +72,7 @@ Move the Sanity Studio from the embedded Next.js route `app/studio/[[...tool]]/p
 - Preserve Glint branding
 
 ## Security Considerations
-- Keep SANITY_API_READ_TOKEN server-only in web (`sanity/lib/serverClient.ts` + `live.ts`); Studio does not need read/write tokens (uses logged-in Sanity auth)
+- Keep `SANITY_API_READ_TOKEN` server-only in web (`sanity/lib/serverClient.ts` + `sanity/lib/fetch.ts` via `serverClient`); Studio does not need read/write tokens (uses logged-in Sanity auth)
 - Do not add token to `studio/package.json` or `studio/env.ts` as NEXT_PUBLIC
 - Verify `sanity/lib/serverClient.ts` retains `import 'server-only'`
 - CORS origins added with `--credentials` only for localhost and production Vercel URL

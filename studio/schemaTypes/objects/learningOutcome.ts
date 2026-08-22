@@ -10,6 +10,19 @@ export const learningOutcome = defineType({
       title: 'Icon',
       type: 'string',
       description: 'Icon identifier (e.g. lucide name) shown in the "What you will learn" section',
+      options: {
+        list: [
+          {title: 'Code', value: 'code'},
+          {title: 'Layers', value: 'layers'},
+          {title: 'Rocket', value: 'rocket'},
+          {title: 'Zap', value: 'zap'},
+          {title: 'Book Open', value: 'book-open'},
+          {title: 'Globe', value: 'globe'},
+          {title: 'Award', value: 'award'},
+          {title: 'Lightbulb', value: 'lightbulb'},
+          {title: 'Target', value: 'target'},
+        ],
+      },
     }),
     defineField({
       name: 'title',
